@@ -1,0 +1,42 @@
+---
+ - hosts: all
+   ignore_errors: yes
+   become: yes
+   tasks:
+     - name: install curl
+       yum:
+         name: curl
+         state: present
+       when: ansible_distribution == "CentOS"
+     - name: install curl
+       apt:
+         name: curl
+         state: present
+       when: ansible_distribution == "Ubuntu"
+     - name: update server
+       yum:
+         name: "*"
+         state: latest
+       when: ansible_distribution == "CentOS"
+
+     - name: update server
+       apt:
+         name: "*"
+         state: latest
+       when: ansible_distribution == "Ubuntu"
+     - name: Create user
+       user:
+         name: Beauty
+         comment: Beauty Agabi
+     - name: Create directory
+       file:
+         path: /tmp/devops-ans
+         owner: Beauty
+         state: directory
+         mode: "0777"
+     - name : Create file
+       file:
+         path: /tmp/ansible-class
+         owner: Beauty
+         state: touch
+         mode: "0600"
